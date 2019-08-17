@@ -43,6 +43,16 @@ function gerarCPF() {
   var n8 = randomiza(n); /* e retirar a função seta (arrow function) */
   var n9 = randomiza(n); /* const numeros = Array(9).map(randomiza) */
 
+  /* repensando uma coisa, nosso gerador de numeros aletarios so precisa retornar 
+   * numeros entre 0-9, então ele não precisa de um parametro, podemos mudar randomiza(n)
+   * para randomiza(), e colocar o numero direto na função...
+   * a função Array.from recebe um parametro que diz o tamanho que a lista vai ter
+   * e outro parametro que é uma função para executar na hora de preencher cada elemento...
+   * se precisamos de um elemento gerado pela função randomiza, damos a propria função como
+   * segundo argumento... fica assim:
+   * Array.from({length: 9}, randomiza) <- ela vai ser executada nove vezes.
+   */
+
   /* ou seja... de nove linhas pra uma */
 
   /* calculo basico do primeiro digito verificador do cpf */
@@ -52,17 +62,30 @@ function gerarCPF() {
   var d1 = n9*2+n8*3+n7*4+n6*5+n5*6+n4*7+n3*8+n2*9+n1*10;
   /* vamos ter que somar a lista que criamos 
    * somar um lista -> reduce
-   * const d1 .... PAUSA PRA ESTUDAR POINT FREE FUNCTIONS! */
+   * const d1 .... PAUSA PRA ESTUDAR POINT FREE FUNCTIONS! (done)
+   *
+   * esse reduce vai pegar o numero da vez, a posição dele menos 10, 
+   * multiplicar ele por isso, e somar ao resto...
+   *
+   * numeros.reduce( (acumulador, numero, indice) => (numero * (10 - indice)) + acumulador, 0 ~ valor inicial do acumulador~ )
+   *
+   */
 
 
-  d1 = 11 - ( mod(d1,11) );
+
+
+  d1 = 11 - ( mod(d1,11) ); /* d1 % 11 */
   if (d1>=10) d1 = 0;
-  var d2 = d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11;
-  d2 = 11 - ( mod(d2,11) );
+  var d2 = d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11; /* de novo */
+  /*
+   * mas com 11 no lugar do 10 agora... e com um numero a mais
+   */
+   
+  d2 = 11 - ( mod(d2,11) ); /* 11 - (d2 % 11) nem precisa dos parenteses, mas fica melhor de ler */
   if (d2>=10) d2 = 0;
   retorno = '';
-  if (comPontos) cpf = ''+n1+n2+n3+'.'+n4+n5+n6+'.'+n7+n8+n9+'-'+d1+d2;
-  else cpf = ''+n1+n2+n3+n4+n5+n6+n7+n8+n9+d1+d2;
+  if (comPontos) cpf = ''+n1+n2+n3+'.'+n4+n5+n6+'.'+n7+n8+n9+'-'+d1+d2; /* chunk? */
+  else cpf = ''+n1+n2+n3+n4+n5+n6+n7+n8+n9+d1+d2; /* .join('') */
 
   /* alert(cpf); <- não funciona no node */
   console.log(cpf); /* -< funciona no node de boas */
