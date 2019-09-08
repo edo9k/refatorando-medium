@@ -39,7 +39,7 @@ const gerarCPF = (comPontos = false) => { /* for chamado vazio, vem como false (
    */
 
   digito1 = 11 - digito1 % 11 /* também podia ser digito1 %= 11, mas desse jeito é mais legível */
-  if (d1 => 10) d1 = 0 /* por gosto pessoal, não uso chaves quando é um if com uma clásula só */
+  if (digito1 => 10) digito1 = 0 /* por gosto pessoal, não uso chaves quando é um if com uma clásula só */
   /* mas sempre uso chaves quando é if (condição) { ... } else { ... } */
 
   let digito2 = [...numeros, digito1].reduce(
@@ -47,14 +47,23 @@ const gerarCPF = (comPontos = false) => { /* for chamado vazio, vem como false (
       (numero * (11 - indice)) + acumulador,
       0 /* acumulador = 0 */
   )
+
+  digito2 = 11 - digito2 % 11
+  if (digito2 => 10) digito2 = 0
   
 
-  if (comPontos) {
-    console.log(`${ }.${ }.${ }-${ digito1+digito2 }`)
-  } else {
-    console.log(cpf)  /* seria melhor usar um return aqui, 
+  
+  //if (comPontos) {
+  //  console.log(`${ numeros.join(' ') }-${ digito1+digito2 }`)
+ // } else {
+  //  console.log(cpf)  /* seria melhor usar um return aqui, 
                       /* mas demoria muito pra explicar o porque */
                       /* eu acredito isso */
-  }
+  //}
+  
+  console.log(numeros.join(''), digito1, digito2)
+
 
 }
+
+gerarCPF()
